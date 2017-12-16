@@ -137,14 +137,16 @@ static int set_attributes(int fd, speed_t bdr)
 	cfsetispeed(&attr, B9600);
 	cfsetospeed(&attr, B9600);
 
+	// check README note
 	cfmakeraw(&attr);
 
-	attr.c_cflag &= ~(CSTOPB | IXOFF | IXANY); //one stop bit, 
-						   //no hardware control on input
+	// one stop bit, no hardware control on input
+	attr.c_cflag &= ~(CSTOPB | IXOFF | IXANY);
 	if (tcsetattr(fd, TCSANOW, &attr) != 0) {
 		printf("\tERROR setting atributes, errno %d.\n", errno);
 	}
 
+	// flush stale data
 	tcflush(fd, TCIFLUSH);
 	printf("Parameters set for fd %d, old data flushed.\n", fd);
 

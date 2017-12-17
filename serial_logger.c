@@ -20,7 +20,7 @@ const char *log_file = "serial.log";
 
 //const char *ttyS1 = "/dev/ttyS21";
 //const char *ttyS2 = "/dev/ttyS22";
-const char *ttyS1 = "/dev/pts/16";
+const char *ttyS1 = "/dev/pts/31";
 const char *ttyS2 = "/dev/pts/29";
 
 /* Number of seconds to wait on input
@@ -61,6 +61,7 @@ static int read_port(int fd, int fd_log, const uint8_t *str_prefix, size_t ssize
 {
 	size_t bytes_read;
 	uint8_t buff = 0;
+	char str[6] = {0};
 	int stx_flag = 0;
 
 	while ((bytes_read = read(fd, &buff, sizeof(buff))) == 1) {
@@ -73,7 +74,9 @@ static int read_port(int fd, int fd_log, const uint8_t *str_prefix, size_t ssize
 			log_char(fd_log, '\n');
 			break;
 		} else if (stx_flag) {
-			log_char(fd_log, buff);
+			snprintf(str, sizeof(str), "0x%2x ", buff);
+			printf("str is %s, ssize %ld.\n", str, sizeof(str));
+			log_string(fd_log, str, sizeof(str));
 		}
 	}
 

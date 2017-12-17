@@ -16,7 +16,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
-const char *ttyS1 = "/dev/pts/8";
+const char *ttyS1 = "/dev/pts/30";
 const char *ttyS2 = "/dev/pts/28";
 
 #define STX 0x02
